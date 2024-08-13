@@ -12,5 +12,3 @@ func Reduce[I any, O any](source []I, reducer func(prevValue O, currValue I, ind
 
 	return out
 }
-
-// [].reduce( (acc, el, indx) => {}, outtype)
