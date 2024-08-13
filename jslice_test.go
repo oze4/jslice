@@ -1,6 +1,7 @@
 package jslice_test
 
 import (
+	"fmt"
 	"reflect"
 	"strconv"
 	"testing"
@@ -39,4 +40,120 @@ func TestMap(t *testing.T) {
 		t.Fatalf("Expected type []out, but got : %s\n", reflect.TypeOf(r))
 	}
 	t.Logf("[Input Type = %s | Output Type = %s]\n", reflect.TypeOf(a), reflect.TypeOf(r))
+}
+
+func TestForEach(t *testing.T) {
+	type foo struct {
+		bar string
+		baz int
+	}
+
+	foos := []*foo{{bar: "a"}, {bar: "b"}, {bar: "c"}, {bar: "d"}, {bar: "e"}}
+
+	jslice.ForEach(foos, func(i int, f *foo) {
+		f.baz = i
+	})
+
+	str := ""
+	jslice.ForEach(foos, func(i int, e *foo) {
+		str += fmt.Sprintf("%v, ", e)
+	})
+
+	t.Logf("%s\n", str)
+}
+
+func TestReduce(t *testing.T) {
+	type anum struct {
+		num int
+	}
+	arr := []int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+
+	res := jslice.Reduce(arr, func(acc []anum, el int, i int, src []int) []anum {
+		return append(acc, anum{num: el})
+	}, []anum{})
+
+	t.Log(res)
+}
+
+func TestPop(t *testing.T) {
+	const (
+		EXPECT_LEN        = 4
+		EXPECT_POPPED_VAL = 5
+	)
+
+	arr := []int{1, 2, 3, 4, 5}
+	lenBefore := len(arr)
+	popped := jslice.Pop(&arr)
+	lenAfter := len(arr)
+
+	if popped != EXPECT_POPPED_VAL {
+		t.Fatalf("Popped value incorrect. Expected=%d | Got=%d\n", EXPECT_POPPED_VAL, popped)
+	}
+	if lenAfter != EXPECT_LEN {
+		t.Fatalf("Slice length incorrect. Expected=%d | Got=%d\n", EXPECT_LEN, lenAfter)
+	}
+	t.Logf("Popped=%d | Slice Length=(before=%d,after=%d)\n", popped, lenBefore, lenAfter)
+}
+
+func TestPopSliceOfStructs(t *testing.T) {
+	const (
+		EXPECT_LEN = 6
+		EXPECT_VAL = 6
+	)
+
+	type foo struct {
+		bar int
+	}
+
+	foos := []foo{{bar: 0}, {bar: 1}, {bar: 2}, {bar: 3}, {bar: 4}, {bar: 5}, {bar: 6}}
+	lenBefore := len(foos)
+	popped := jslice.Pop(&foos)
+	lenAfter := len(foos)
+
+	if popped.bar != EXPECT_VAL {
+		t.Fatalf("Popped element incorrect. Expected=%d | Got=%d\n", EXPECT_VAL, popped.bar)
+	}
+	if lenAfter != EXPECT_LEN {
+		t.Fatalf("Slice length incorrect. Expected=%d | Got=%d\n", EXPECT_LEN, lenAfter)
+	}
+	t.Logf("Popped=%v | Length=(before=%d,after=%d)\n", popped, lenBefore, lenAfter)
+}
+
+func TestPush(t *testing.T) {
+	const EXPECT_LEN = 5
+	arr := []int{1, 2, 3, 4}
+	valToPush := 5
+	jslice.Push(&arr, valToPush)
+	if len(arr) != EXPECT_LEN {
+		t.Fatalf("Slice length incorrect. Expect=%d | Got=%d\n", EXPECT_LEN, len(arr))
+	}
+	t.Logf("Pushed %d into %v\n", valToPush, arr)
+}
+
+func TestSome(t *testing.T) {
+	arr := []int{1, 1, 1, 1, 2, 1, 1}
+	res := jslice.Some(arr, func(i int, e int) bool {
+		return e == 2
+	})
+	if res == false {
+		t.Fatalf("Incorrect result. Expected = true | Got = false\n")
+	}
+	t.Logf("Some : %t\n", res)
+}
+
+func TestTest(t *testing.T) {
+	type Number struct {
+		Value int
+	}
+
+	s := []int{1, 2, 3}
+
+	reducer := func(acc []Number, e int, i int, og []int) []Number {
+		num := Number{Value: e}
+		return append(acc, num)
+	}
+
+	r := jslice.Reduce(s, reducer, []Number{})
+
+	t.Log(reflect.TypeOf(r))
 }
