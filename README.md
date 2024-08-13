@@ -1,6 +1,6 @@
 # jslice
 
-`jslice`, pronounced [JS-slice] provides generic, JavaScript-like, [array methods](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#instance_methods) for Go slices.
+`jslice`, pronounced JS-slice (jay-es-slice), provides generic, JavaScript-like [array methods](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#instance_methods) for Go slices.
 
 ## Filter
 
