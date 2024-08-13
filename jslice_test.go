@@ -146,7 +146,7 @@ func TestEvery(t *testing.T) {
 		Source string
 	}
 
-	s := []Shipment{{Source: "New York"},{Source: "New York"},{Source: "New York"}}
+	s := []Shipment{{Source: "New York"}, {Source: "New York"}, {Source: "New York"}}
 
 	r := jslice.Every(s, func(i int, e Shipment) bool {
 		return e.Source == "New York"
@@ -157,7 +157,6 @@ func TestEvery(t *testing.T) {
 	}
 	t.Logf("%t\n", r)
 }
-
 
 // **************************************************************
 
