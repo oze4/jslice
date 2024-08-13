@@ -149,7 +149,9 @@ Returns a copy of a portion of a slice. We return a slice from `start` up to, bu
 
 ```go
 s := []int{1,2,3,4,5}
-r := jslice.Slice(s, 0, 3)
+start := 0
+end := 3
+r := jslice.Slice(s, start, end)
 // r == []int{1,2,3}
 ```
 
