@@ -158,6 +158,13 @@ func TestEvery(t *testing.T) {
 	t.Logf("%t\n", r)
 }
 
+func TestSlice(t *testing.T) {
+	s := []int{1, 2, 3, 4, 5}
+	r := jslice.Slice(s, 0, 3)
+	t.Log(s)
+	t.Log(r)
+}
+
 // **************************************************************
 
 func TestTest(t *testing.T) {
