@@ -115,13 +115,30 @@ item := jslice.Pop(&s)
 
 ## Some
 
-Some tests that at least one element in the slice matches provided condition.
+Tests that at least one element in the slice matches provided condition.
 
 ```go
 s := []int{1,1,2,1,1}
 
 r := jslice.Some(s, func(i int, e int) bool {
   return e == 2
+})
+// r == true
+```
+
+## Every
+
+Tests that every element in slice meets provided condition. Returns false if at least one element does not meet condition.
+
+```go
+type Shipment struct {
+  Source string
+}
+
+s := []Shipment{{Source: "New York"}, {Source: "New York"}, {Source: "New York"}}
+
+r := jslice.Every(s, func(i int, e Shipment) bool {
+  return e.Source == "New York"
 })
 // r == true
 ```

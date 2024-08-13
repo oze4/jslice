@@ -141,6 +141,26 @@ func TestSome(t *testing.T) {
 	t.Logf("Some : %t\n", res)
 }
 
+func TestEvery(t *testing.T) {
+	type Shipment struct {
+		Source string
+	}
+
+	s := []Shipment{{Source: "New York"},{Source: "New York"},{Source: "New York"}}
+
+	r := jslice.Every(s, func(i int, e Shipment) bool {
+		return e.Source == "New York"
+	})
+
+	if r == false {
+		t.Fatalf("Expect true | Got false\n")
+	}
+	t.Logf("%t\n", r)
+}
+
+
+// **************************************************************
+
 func TestTest(t *testing.T) {
 	type Number struct {
 		Value int
