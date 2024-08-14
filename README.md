@@ -259,6 +259,16 @@ r := jslice.ToReversed(s)
 // r == []string{"baz", "bar", "foo"}
 ```
 
+## Unshift
+
+Adds an element to the front of a slice.
+
+```go
+s := []int{2,3,4,5}
+jslice.Unshift(&s, 1)
+// s == []int{1,2,3,4,5}
+```
+
 
 
 
