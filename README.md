@@ -166,6 +166,81 @@ r := jslice.Slice(s, start, end)
 // r == []int{1,2,3}
 ```
 
+## Splice
+
+Changes the contents of a slice by removing or replacing existing elements and/or adding new elements.
+
+- If `deleteCount` and `replacementElements` both equal `0`, we just return the original slice without modifying anything.
+- If `start` is greater than or equal to the length of the slice, no elements will be deleted, but the method will behave as an adding function.
+
+<b>Remove `0` elements before index `2` and insert "`earth`" and "`mars`"</b>
+```go
+s := []string{"mercury", "venus", "jupiter", "saturn"}
+jslice.Splice(&s, 2, 0, "earth", "mars")
+// s == []string{"mercury", "venus", "earth", "mars", "jupiter", "saturn"}
+```
+
+**Remove `0` elements at index `0` and insert "`earth`" and "`mars`".**
+
+```go
+s := []string{"mercury", "venus", "jupiter", "saturn"}
+jslice.Splice(&s, 0, 0, "earth", "mars")
+// s == []string{"earth", "mars", "mercury", "venus", "jupiter", "saturn"}
+```
+
+**Remove `1` element at index `2`, and insert "`earth`" and "`mars`"**
+
+```go
+s := []string{"mercury", "venus", "jupiter", "saturn"}
+jslice.Splice(&s, 2, 1, "earth", "mars")
+// s == []string{"mercury", "venus", "earth", "mars", "saturn"}
+```
+
+**Remove `1` element at index `0` and insert "`earth`" and "`mars`"**
+
+```go
+s := []string{"mercury", "venus", "jupiter", "saturn"}
+jslice.Splice(&s, 0, 1, "earth", "mars")
+// s == []string{"earth", "mars", "venus", "jupiter", "saturn"}
+```
+
+**Remove `3` elements starting at index `1` and insert nothing**
+
+```go
+s := []string{"mercury", "venus", "jupiter", "saturn"}
+jslice.Splice(&s, 1, 3)
+// s == []string{"mercury"}
+```
+
+**If `start` + `deleteCount` is greater than or equal to slice length, we modify `deleteCount` to equal the length of the slice - `start`**
+
+```go
+s := []string{"mercury", "venus", "jupiter", "saturn"}
+jslice.Splice(&s, 2, 100) // <- 100 greater than slice length
+// s == []string{"mercury", "venus"}
+```
+
+**If `start` is greater than or equal to the length of the slice, no elements are removed, but the method is treated as an add function**
+
+```go
+s := []string{"mercury", "venus", "jupiter", "saturn"}
+// Even though `deleteCount` == 1, nothing will be
+// deleted because `start` >= length of slice.
+jslice.Splice(&s, 100, 1, "earth", "mars") 
+// s == []string{"mercury", "venus", "jupiter", "saturn", "earth", "mars"}
+```
+
+**Splice last element by removing `1` element at index `3` and inserting "`earth`" and "`mars`"**
+
+```go
+s := []string{"mercury", "venus", "jupiter", "saturn"}
+jslice.Splice(&s, 3, 1, "earth", "mars")
+// s == []string{"mercury", "venus", "jupiter", "earth", "mars"}
+```
+
+
+
+
 <br />
 <br />
 <br />
