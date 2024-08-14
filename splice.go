@@ -4,17 +4,17 @@ package jslice
 // and/or adding new elements.
 func Splice[T any](s *[]T, start uint, deleteCount uint, replacementItems ...T) {
 	if deleteCount == 0 && len(replacementItems) == 0 {
-		return //*s
+		return
 	}
 
 	// If start >= len(*s) no elements will be deleted, but the method will behave as
 	// an adding function.
 	if start >= uint(len(*s)) {
 		if len(replacementItems) == 0 {
-			return //*s
+			return
 		}
 		*s = append(*s, replacementItems...)
-		return //*s
+		return
 	}
 
 	// If the "end" (start+deleteCount) is greater than the length of the slice, limit
@@ -25,5 +25,5 @@ func Splice[T any](s *[]T, start uint, deleteCount uint, replacementItems ...T) 
 	}
 
 	*s = append((*s)[0:start], append(replacementItems, (*s)[start+deleteCount:]...)...)
-	return //*s
+	return
 }
