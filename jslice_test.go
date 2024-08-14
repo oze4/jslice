@@ -160,7 +160,7 @@ func TestEvery(t *testing.T) {
 
 func TestSlice(t *testing.T) {
 	const (
-		EXPECT_OG_LEN = 5
+		EXPECT_OG_LEN     = 5
 		EXPECT_SLICED_LEN = 3
 	)
 	s := []int{1, 2, 3, 4, 5}
@@ -177,19 +177,181 @@ func TestSlice(t *testing.T) {
 
 func TestShift(t *testing.T) {
 	const (
-		EXPECT_OG_LEN = 3
+		EXPECT_OG_LEN     = 3
 		EXPECT_RESULT_VAL = 1
 	)
-	s := []int{1,2,3,4}
+	s := []int{1, 2, 3, 4}
 	r := jslice.Shift(&s)
 	if len(s) != EXPECT_OG_LEN {
 		t.Fatalf("Expected original slice length to now be = %d | Got = %d\n", EXPECT_OG_LEN, len(s))
 	}
-	if (r != EXPECT_RESULT_VAL) {
+	if r != EXPECT_RESULT_VAL {
 		t.Fatalf("Expected result value to be = %d | Got = %d\n", EXPECT_RESULT_VAL, r)
 	}
 	t.Log(s)
 	t.Log(r)
+}
+
+func TestSplice_StartIndex2_Delete0_Insert2(t *testing.T) {
+	EXPECT := []string{"mercury", "venus", "earth", "mars", "jupiter", "saturn"}
+	s := []string{"mercury", "venus", "jupiter", "saturn"}
+
+	jslice.Splice(&s, 2, 0, "earth", "mars")
+
+	if len(EXPECT) != len(s) {
+		t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+	}
+	// use jslice to help with testing ;)
+	jslice.ForEach(s, func(i int, e string) {
+		if EXPECT[i] != e {
+			t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+		}
+	})
+	t.Log(s)
+}
+
+func TestSplice_StartIndex0_Delete0_Insert2(t *testing.T) {
+	EXPECT := []string{"earth", "mars", "mercury", "venus", "jupiter", "saturn"}
+	s := []string{"mercury", "venus", "jupiter", "saturn"}
+
+	jslice.Splice(&s, 0, 0, "earth", "mars")
+
+	if len(EXPECT) != len(s) {
+		t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+	}
+	// use jslice to help with testing ;)
+	jslice.ForEach(s, func(i int, e string) {
+		if EXPECT[i] != e {
+			t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+		}
+	})
+	t.Log(s)
+}
+
+func TestSplice_StartIndex2_Delete1_Insert2(t *testing.T) {
+	EXPECT := []string{"mercury", "venus", "earth", "mars", "saturn"}
+	s := []string{"mercury", "venus", "jupiter", "saturn"}
+
+	jslice.Splice(&s, 2, 1, "earth", "mars")
+
+	if len(EXPECT) != len(s) {
+		t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+	}
+	// use jslice to help with testing ;)
+	jslice.ForEach(s, func(i int, e string) {
+		if EXPECT[i] != e {
+			t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+		}
+	})
+	t.Log(s)
+}
+
+func TestSplice_StartIndex0_Delete1_Insert2(t *testing.T) {
+	EXPECT := []string{"earth", "mars", "venus", "jupiter", "saturn"}
+	s := []string{"mercury", "venus", "jupiter", "saturn"}
+
+	jslice.Splice(&s, 0, 1, "earth", "mars")
+
+	if len(EXPECT) != len(s) {
+		t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+	}
+	// use jslice to help with testing ;)
+	jslice.ForEach(s, func(i int, e string) {
+		if EXPECT[i] != e {
+			t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+		}
+	})
+	t.Log(s)
+}
+
+func TestSplice_StartIndex1_DeleteCount0_Insert0(t *testing.T) {
+	EXPECT := []string{"mercury"}
+	s := []string{"mercury", "venus", "jupiter", "saturn"}
+
+	jslice.Splice(&s, 1, 3)
+
+	if len(EXPECT) != len(s) {
+		t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+	}
+	// use jslice to help with testing ;)
+	jslice.ForEach(s, func(i int, e string) {
+		if EXPECT[i] != e {
+			t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+		}
+	})
+	t.Log(s)
+}
+
+func TestSplice_DeleteCountGreaterThanSliceLen(t *testing.T) {
+	EXPECT := []string{"mercury", "venus"}
+	s := []string{"mercury", "venus", "jupiter", "saturn"}
+
+	jslice.Splice(&s, 2, 100)
+
+	if len(EXPECT) != len(s) {
+		t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+	}
+	// use jslice to help with testing ;)
+	jslice.ForEach(s, func(i int, e string) {
+		if EXPECT[i] != e {
+			t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+		}
+	})
+	t.Log(s)
+}
+
+func TestSplice_StartIndexGreaterThanSliceLen_WithoutReplacementItems(t *testing.T) {
+	EXPECT := []string{"mercury", "venus", "jupiter", "saturn"}
+	s := []string{"mercury", "venus", "jupiter", "saturn"}
+
+	jslice.Splice(&s, 100, 100)
+
+	if len(EXPECT) != len(s) {
+		t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+	}
+	// use jslice to help with testing ;)
+	jslice.ForEach(s, func(i int, e string) {
+		if EXPECT[i] != e {
+			t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+		}
+	})
+	t.Log(s)
+}
+
+func TestSplice_StartIndexGreaterThanSliceLen_WithReplacementItems(t *testing.T) {
+	EXPECT := []string{"mercury", "venus", "jupiter", "saturn", "earth", "mars"}
+	s := []string{"mercury", "venus", "jupiter", "saturn"}
+
+	jslice.Splice(&s, 100, 1, "earth", "mars")
+
+	if len(EXPECT) != len(s) {
+		t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+	}
+	// use jslice to help with testing ;)
+	jslice.ForEach(s, func(i int, e string) {
+		if EXPECT[i] != e {
+			t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+		}
+	})
+	t.Log(s)
+}
+
+func TestSplice_SpliceLastElement(t *testing.T) {
+	EXPECT := []string{"mercury", "venus", "jupiter", "earth", "mars"}
+	s := []string{"mercury", "venus", "jupiter", "saturn"}
+
+	jslice.Splice(&s, 3, 1, "earth", "mars")
+
+	if len(EXPECT) != len(s) {
+		t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+	}
+	// use jslice to help with testing ;)
+	jslice.ForEach(s, func(i int, e string) {
+		if EXPECT[i] != e {
+			t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+		}
+	})
+	t.Log(s)
 }
 
 // **************************************************************
