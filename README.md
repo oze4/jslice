@@ -238,6 +238,27 @@ jslice.Splice(&s, 3, 1, "earth", "mars")
 // s == []string{"mercury", "venus", "jupiter", "earth", "mars"}
 ```
 
+## Reverse
+
+Modifies a slice in-place by reversing it's elements. If you do not want to modify the slice in-place, use `ToReversed` method.
+
+```go
+s := []int{1,2,3,4,5}
+jslice.Reverse(&s)
+// s == []int{5,4,3,2,1}
+```
+
+## ToReversed
+
+Returns a copy of a slice in reversed order.
+
+```go
+s := []string{"foo", "bar", "baz"}
+r := jslice.ToReversed(s)
+// s == []string{"foo", "bar", "baz"}
+// r == []string{"baz", "bar", "foo"}
+```
+
 
 
 

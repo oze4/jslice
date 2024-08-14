@@ -354,6 +354,100 @@ func TestSplice_SpliceLastElement(t *testing.T) {
 	t.Log(s)
 }
 
+func TestReverse_1(t *testing.T) {
+	EXPECT := []int{5, 4, 3, 2, 1}
+	s := []int{1, 2, 3, 4, 5}
+	jslice.Reverse(&s)
+	if len(EXPECT) != len(s) {
+		t.Fatalf("Expected length of = %d | Got %d\n", len(EXPECT), len(s))
+	}
+	jslice.ForEach(s, func(i int, e int) {
+		if EXPECT[i] != e {
+			t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+		}
+	})
+	t.Log(s)
+}
+
+func TestReverse_2(t *testing.T) {
+	type foo struct {
+		bar int
+	}
+
+	EXPECT := []foo{{bar: 5}, {bar: 4}, {bar: 3}, {bar: 2}, {bar: 1}}
+	s := []foo{{bar: 1}, {bar: 2}, {bar: 3}, {bar: 4}, {bar: 5}}
+
+	jslice.Reverse(&s)
+
+	if len(EXPECT) != len(s) {
+		t.Fatalf("Expected length of = %d | Got %d\n", len(EXPECT), len(s))
+	}
+	jslice.ForEach(s, func(i int, e foo) {
+		if EXPECT[i].bar != e.bar {
+			t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+		}
+	})
+	t.Log(s)
+}
+
+func TestToReversed(t *testing.T) {
+	type foo struct {
+		bar int
+	}
+
+	EXPECT_REVERSED := []foo{{bar: 5}, {bar: 4}, {bar: 3}, {bar: 2}, {bar: 1}}
+	EXPECT_OG := []foo{{bar: 1}, {bar: 2}, {bar: 3}, {bar: 4}, {bar: 5}}
+
+	s := []foo{{bar: 1}, {bar: 2}, {bar: 3}, {bar: 4}, {bar: 5}}
+	r := jslice.ToReversed(s)
+
+	if len(EXPECT_REVERSED) != len(r) {
+		t.Fatalf("Expected length of = %d | Got %d\n", len(EXPECT_REVERSED), len(r))
+	}
+	jslice.ForEach(r, func(i int, e foo) {
+		if EXPECT_REVERSED[i].bar != e.bar {
+			t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT_REVERSED, s)
+		}
+	})
+	if len(EXPECT_OG) != len(s) {
+		t.Fatalf("Expected length of = %d | Got %d\n", len(EXPECT_OG), len(s))
+	}
+	jslice.ForEach(s, func(i int, e foo) {
+		if EXPECT_OG[i].bar != e.bar {
+			t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT_OG, s)
+		}
+	})
+	t.Log(s)
+	t.Log(r)
+}
+
+func TestToReversed_2(t *testing.T) {
+	EXPECT_REVERSED := []string{"baz", "bar", "foo"}
+	EXPECT_OG := []string{"foo", "bar", "baz"}
+
+	s := []string{"foo", "bar", "baz"}
+	r := jslice.ToReversed(s)
+
+	if len(EXPECT_REVERSED) != len(r) {
+		t.Fatalf("Expected length of = %d | Got %d\n", len(EXPECT_REVERSED), len(r))
+	}
+	jslice.ForEach(r, func(i int, e string) {
+		if EXPECT_REVERSED[i] != e {
+			t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT_REVERSED, s)
+		}
+	})
+	if len(EXPECT_OG) != len(s) {
+		t.Fatalf("Expected length of = %d | Got %d\n", len(EXPECT_OG), len(s))
+	}
+	jslice.ForEach(s, func(i int, e string) {
+		if EXPECT_OG[i] != e {
+			t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT_OG, s)
+		}
+	})
+	t.Log(s)
+	t.Log(r)
+}
+
 // **************************************************************
 
 func TestTest(t *testing.T) {
