@@ -7,22 +7,22 @@ func Splice[T any](s *[]T, start uint, deleteCount uint, replacementItems ...T) 
 		return //*s
 	}
 
-    // If start >= len(*s) no elements will be deleted, but the method will behave as
-    // an adding function.
-    if start >= uint(len(*s)) {
-        if len(replacementItems) == 0 {
-            return //*s
-        }
-        *s = append(*s, replacementItems...)
-        return //*s
-    }
+	// If start >= len(*s) no elements will be deleted, but the method will behave as
+	// an adding function.
+	if start >= uint(len(*s)) {
+		if len(replacementItems) == 0 {
+			return //*s
+		}
+		*s = append(*s, replacementItems...)
+		return //*s
+	}
 
-    // If the "end" (start+deleteCount) is greater than the length of the slice, limit
-    // the delete count to the length of the slice - start. Otherwise we get index out
-    // of bounds error.
-    if start + deleteCount >= uint(len(*s)) {
-        deleteCount = uint(len(*s)) - start
-    }
+	// If the "end" (start+deleteCount) is greater than the length of the slice, limit
+	// the delete count to the length of the slice - start. Otherwise we get index out
+	// of bounds error.
+	if start+deleteCount >= uint(len(*s)) {
+		deleteCount = uint(len(*s)) - start
+	}
 
 	*s = append((*s)[0:start], append(replacementItems, (*s)[start+deleteCount:]...)...)
 	return //*s
