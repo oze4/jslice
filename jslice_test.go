@@ -448,6 +448,23 @@ func TestToReversed_2(t *testing.T) {
 	t.Log(r)
 }
 
+func TestUnshift(t *testing.T) {
+	EXPECT := []int{1, 2, 3, 4, 5}
+
+	s := []int{2, 3, 4, 5}
+	jslice.Unshift(&s, 1)
+
+	if len(EXPECT) != len(s) {
+		t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+	}
+	jslice.ForEach(s, func(i int, e int) {
+		if EXPECT[i] != e {
+			t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+		}
+	})
+	t.Log(s)
+}
+
 // **************************************************************
 
 func TestTest(t *testing.T) {
