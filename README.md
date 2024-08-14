@@ -93,7 +93,7 @@ jslice.ForEach(s, func(i int, e int) {
 
 ## Push
 
-Appends an element to the end of a slice.
+Appends an element to the end of a slice. `Push` modifies the original slice.
 
 ```go
 s := []int{1,2,3}
@@ -104,13 +104,24 @@ jslice.Push(&s, i)
 
 ## Pop
 
-Removes element from end of slice and returns the element that was removed.
+Removes element from end of slice and returns the element that was removed. `Pop` modifies the original slice.
 
 ```go
 s := []int{1,2,3}
 item := jslice.Pop(&s)
 // s == []int{1,2}
 // item == 3
+```
+
+## Shift
+
+Removes first element (index 0) from slice and returns the removed element. `Shift` modifies the orignal slice.
+
+```go
+s := []int{1,2,3,4}
+i := jslice.Shift(&s)
+// s == []int{2,3,4}
+// i == 1
 ```
 
 ## Some

@@ -159,8 +159,35 @@ func TestEvery(t *testing.T) {
 }
 
 func TestSlice(t *testing.T) {
+	const (
+		EXPECT_OG_LEN = 5
+		EXPECT_SLICED_LEN = 3
+	)
 	s := []int{1, 2, 3, 4, 5}
 	r := jslice.Slice(s, 0, 3)
+	if len(s) != EXPECT_OG_LEN {
+		t.Fatalf("Expect original slice length to be = %d | Got = %d\n", EXPECT_OG_LEN, len(s))
+	}
+	if len(r) != EXPECT_SLICED_LEN {
+		t.Fatalf("Expect sliced length to be = %d | Got = %d\n", EXPECT_SLICED_LEN, len(r))
+	}
+	t.Log(s)
+	t.Log(r)
+}
+
+func TestShift(t *testing.T) {
+	const (
+		EXPECT_OG_LEN = 3
+		EXPECT_RESULT_VAL = 1
+	)
+	s := []int{1,2,3,4}
+	r := jslice.Shift(&s)
+	if len(s) != EXPECT_OG_LEN {
+		t.Fatalf("Expected original slice length to now be = %d | Got = %d\n", EXPECT_OG_LEN, len(s))
+	}
+	if (r != EXPECT_RESULT_VAL) {
+		t.Fatalf("Expected result value to be = %d | Got = %d\n", EXPECT_RESULT_VAL, r)
+	}
 	t.Log(s)
 	t.Log(r)
 }
