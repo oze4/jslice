@@ -465,6 +465,26 @@ func TestUnshift(t *testing.T) {
 	t.Log(s)
 }
 
+func TestAt_NegativeIndex(t *testing.T) {
+	EXPECT_VAL := 5
+	s := []int{1, 2, 3, 4, 5}
+	r := jslice.At(s, -1)
+	if r != EXPECT_VAL {
+		t.Fatalf("Expected=%d | Got=%d\n", EXPECT_VAL, r)
+	}
+	t.Log(r)
+}
+
+func TestAt_PositiveIndex(t *testing.T) {
+	EXPECT_VAL := 2
+	s := []int{1, 2, 3, 4, 5}
+	r := jslice.At(s, 1)
+	if r != EXPECT_VAL {
+		t.Fatalf("Expected=%d | Got=%d\n", EXPECT_VAL, r)
+	}
+	t.Log(r)
+}
+
 // **************************************************************
 
 func TestTest(t *testing.T) {

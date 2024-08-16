@@ -269,6 +269,19 @@ jslice.Unshift(&s, 1)
 // s == []int{1,2,3,4,5}
 ```
 
+## At
+
+At takes an integer value and returns the item at that index, allowing for **positive** _and_ **negative** integers. Negative integers
+count back from the last item in the array. 
+
+**NOTE**: If the provided index is negative, and it's absolute value is greater than the length of the array, we return the first item (index 0) in the array.
+
+```go
+s := []int{1,2,3,4,5}
+r := jslice.At(s, -3)
+// r == 3
+```
+
 
 
 
