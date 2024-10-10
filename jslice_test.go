@@ -141,7 +141,18 @@ func TestSome(t *testing.T) {
 	t.Logf("Some : %t\n", res)
 }
 
-func TestEvery(t *testing.T) {
+func TestSome_NoMatch(t *testing.T) {
+	arr := []int{1, 1, 1, 1, 2, 1, 1}
+	res := jslice.Some(arr, func(i int, e int) bool {
+		return e == 99
+	})
+	if res == true {
+		t.Fatalf("Incorrect result. Expected = false | Got = true\n")
+	}
+	t.Logf("Some : %t\n", res)
+}
+
+func TestEvery_WithMatch(t *testing.T) {
 	type Shipment struct {
 		Source string
 	}
@@ -158,6 +169,23 @@ func TestEvery(t *testing.T) {
 	t.Logf("%t\n", r)
 }
 
+func TestEvery_WithoutMatch(t *testing.T) {
+	type Shipment struct {
+		Source string
+	}
+
+	s := []Shipment{{Source: "New York"}, {Source: "New York"}, {Source: "New York"}}
+
+	r := jslice.Every(s, func(i int, e Shipment) bool {
+		return e.Source == "Paris"
+	})
+
+	if r == true {
+		t.Fatalf("Expect false | Got true\n")
+	}
+	t.Logf("%t\n", r)
+}
+
 func TestSlice(t *testing.T) {
 	const (
 		EXPECT_OG_LEN     = 5
@@ -165,6 +193,23 @@ func TestSlice(t *testing.T) {
 	)
 	s := []int{1, 2, 3, 4, 5}
 	r := jslice.Slice(s, 0, 3)
+	if len(s) != EXPECT_OG_LEN {
+		t.Fatalf("Expect original slice length to be = %d | Got = %d\n", EXPECT_OG_LEN, len(s))
+	}
+	if len(r) != EXPECT_SLICED_LEN {
+		t.Fatalf("Expect sliced length to be = %d | Got = %d\n", EXPECT_SLICED_LEN, len(r))
+	}
+	t.Log(s)
+	t.Log(r)
+}
+
+func TestSlice_EndGreaterThanSize(t *testing.T) {
+	const (
+		EXPECT_OG_LEN     = 5
+		EXPECT_SLICED_LEN = 3
+	)
+	s := []int{1, 2, 3, 4, 5}
+	r := jslice.Slice(s, 2, 10) // end is greater than size of slice
 	if len(s) != EXPECT_OG_LEN {
 		t.Fatalf("Expect original slice length to be = %d | Got = %d\n", EXPECT_OG_LEN, len(s))
 	}
@@ -197,6 +242,24 @@ func TestSplice_StartIndex2_Delete0_Insert2(t *testing.T) {
 	s := []string{"mercury", "venus", "jupiter", "saturn"}
 
 	jslice.Splice(&s, 2, 0, "earth", "mars")
+
+	if len(EXPECT) != len(s) {
+		t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+	}
+	// use jslice to help with testing ;)
+	jslice.ForEach(s, func(i int, e string) {
+		if EXPECT[i] != e {
+			t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
+		}
+	})
+	t.Log(s)
+}
+
+func TestSplice_DeleteCountZero_ReplacementItemsZero(t *testing.T) {
+	EXPECT := []string{"mercury", "venus", "earth", "mars", "jupiter", "saturn"}
+	s := []string{"mercury", "venus", "earth", "mars", "jupiter", "saturn"}
+
+	jslice.Splice(&s, 2, 0)
 
 	if len(EXPECT) != len(s) {
 		t.Fatalf("\nExpected\t= %v\nGot\t\t= %v\n", EXPECT, s)
