@@ -11,12 +11,11 @@ import "math"
 // item (index 0) in the array.
 func At[T any](s []T, index int) T {
 	size := len(s)
+	if int(math.Abs(float64(index))) > size {
+		return s[0]
+	}
 	if index < 0 {
-		if int(math.Abs(float64(index))) > size {
-			index = 0
-		} else {
-			index = size + index
-		}
+		return s[size+index]
 	}
 	return s[index]
 }

@@ -485,6 +485,16 @@ func TestAt_PositiveIndex(t *testing.T) {
 	t.Log(r)
 }
 
+func TestAt_IndexGreaterThanSize(t *testing.T) {
+	EXPECT_VAL := 1
+	s := []int{1, 2, 3, 4, 5}
+	r := jslice.At(s, 10) // asking for an index greater than size of slice
+	if r != EXPECT_VAL {
+		t.Fatalf("Expected=%d | Got=%d\n", EXPECT_VAL, r)
+	}
+	t.Log(r)
+}
+
 // **************************************************************
 
 func TestTest(t *testing.T) {
